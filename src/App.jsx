@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import profileimage from './assets/MMary.png';
 import BigData from './assets/BigData.png';
 import HealthApp from './assets/HealthApp.png';
@@ -40,6 +40,11 @@ export default function App() {
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  
+  // Refs to track swipe
+  const touchStartX = useRef(null);
+  const touchEndX = useRef(null);
+  const minSwipeDistance = 40;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -96,17 +101,25 @@ export default function App() {
   const nextProject = () => setCurrentIndex((prev) => (prev + 1) % workCaseStudies.length);
   const prevProject = () => setCurrentIndex((prev) => (prev - 1 + workCaseStudies.length) % workCaseStudies.length);
 
+  // Swipe handlers
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    const delta = touchEndX - touchStartX.current;
+    
+    // Threshold to prevent accidental swipes
+    if (Math.abs(delta) > 50) {
+      if (delta > 0) prevProject();
+      else nextProject();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#FDFDFC] text-[#0f172a] font-sans antialiased selection:bg-[#258c88] selection:text-white overflow-x-hidden">
       <style>{`
-        .mobile-scrollbar::-webkit-scrollbar { height: 6px; }
-        .mobile-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
-        .mobile-scrollbar::-webkit-scrollbar-thumb { background: #258c88; border-radius: 10px; }
-        
-        @media (min-width: 768px) {
-          .mobile-scrollbar::-webkit-scrollbar { display: none; }
-        }
-        
         html { scroll-behavior: smooth; }
       `}</style>
 
@@ -139,7 +152,8 @@ export default function App() {
             <h1 className="text-3xl md:text-6xl lg:text-8xl font-serif font-bold leading-[0.9]">I turn product chaos into <span className="text-[#258c88]">measurable growth.</span></h1>
             <p className="text-lg md:text-2xl text-slate-400 font-light">As a Data-driven Product Leader, I investigate metrics to uncover the "why" behind the numbers, building products that truly resonate with users.</p>
           </div>
-          <div className="relative order-1 md:order-2 flex justify-center mt-12 md:mt-0">
+          <div className="relative order-1 md:order-2 flex flex-col items-center mt-12 md:mt-0">
+            {/* Profile Card Wrapper */}
             <div className="relative group w-72 md:w-96">
               <div className="absolute -inset-x-10 -top-10 h-140 bg-teal-500/20 rounded-[40%_60%_70%_30%_/_40%_50%_60%_50%] blur-2xl"></div>
               <div className="relative p-2 bg-slate-900 rounded-[2rem] shadow-2xl rotate-3">
@@ -148,7 +162,26 @@ export default function App() {
                 </div>
               </div>
             </div>
-          </div>
+  {/* Social Links - Now outside the card wrapper for better click interaction */}
+  <div className="flex gap-6 mt-8 z-10">
+    <a 
+      href="https://www.linkedin.com/in/mary-mbuvi-176882aa" 
+      target="_blank" 
+      rel="noreferrer" 
+      className="p-4 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:border-[#258c88] hover:text-[#258c88] transition-all"
+    >
+      <LinkedinIcon />
+    </a>
+    <a 
+      href="https://github.com/MaryMbuvi" 
+      target="_blank" 
+      rel="noreferrer" 
+      className="p-4 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:border-[#258c88] hover:text-[#258c88] transition-all"
+    >
+      <GithubIcon />
+    </a>
+  </div>
+</div>
         </div>
       </section>
 
@@ -168,10 +201,20 @@ export default function App() {
       <section id="work" className="py-12 bg-slate-100">
         <div className="px-4 md:px-8 max-w-7xl mx-auto">
           <h3 className="text-3xl md:text-5xl font-serif font-bold mb-8">Featured Projects</h3>
-          <p className="md:hidden text-slate-500 italic mb-6">Swipe left to explore →</p>
-          
-          {/* Main Card View */}
-          <div className="bg-white p-6 md:p-10 rounded-[2rem] border border-slate-200 shadow-lg">
+          <p className="md:hidden text-slate-500 italic mb-6">Swipe to explore more →</p>
+
+          {/* Main Card View with touch handlers */}
+         <div
+  onTouchStart={handleTouchStart}
+  onTouchMove={(e) => e.preventDefault()}
+  onTouchEnd={handleTouchEnd}
+  className="bg-white p-6 md:p-10 rounded-[2rem] border border-slate-200 shadow-lg touch-pan-y select-none"
+  style={{
+    touchAction: "pan-y",
+    WebkitUserSelect: "none",
+    WebkitTouchCallout: "none",
+  }}
+>
             <div className="flex flex-col md:flex-row gap-8">
                 <div className="md:w-1/3">
                     <div className="text-4xl font-serif font-bold text-slate-200 mb-4">0{currentIndex + 1}</div>
