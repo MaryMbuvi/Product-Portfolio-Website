@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import profileimage from './assets/MMary.png';
 import BigData from './assets/BigData.png';
 import HealthApp from './assets/HealthApp.png';
@@ -27,6 +26,9 @@ const X = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
 );
 
+const ArrowLeft = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>;
+const ArrowRight = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>;
+
 // --- Strategic Service Icons ---
 const DiscoveryIcon = () => <svg className="w-8 h-8 md:w-10 md:h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>;
 const StrategyIcon = () => <svg className="w-8 h-8 md:w-10 md:h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>;
@@ -37,6 +39,7 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -90,12 +93,20 @@ export default function App() {
     },
   ];
 
+  const nextProject = () => setCurrentIndex((prev) => (prev + 1) % workCaseStudies.length);
+  const prevProject = () => setCurrentIndex((prev) => (prev - 1 + workCaseStudies.length) % workCaseStudies.length);
+
   return (
     <div className="min-h-screen bg-[#FDFDFC] text-[#0f172a] font-sans antialiased selection:bg-[#258c88] selection:text-white overflow-x-hidden">
       <style>{`
-        .custom-scrollbar::-webkit-scrollbar { height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #258c88; border-radius: 10px; }
+        .mobile-scrollbar::-webkit-scrollbar { height: 6px; }
+        .mobile-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+        .mobile-scrollbar::-webkit-scrollbar-thumb { background: #258c88; border-radius: 10px; }
+        
+        @media (min-width: 768px) {
+          .mobile-scrollbar::-webkit-scrollbar { display: none; }
+        }
+        
         html { scroll-behavior: smooth; }
       `}</style>
 
@@ -120,37 +131,29 @@ export default function App() {
             <a href="#contact" onClick={() => setIsMenuOpen(false)} className="mt-auto px-6 py-4 bg-[#258c88] text-center text-white rounded-2xl text-lg">Let's Connect</a>
         </div>
       )}
-<section id="about" className="pt-24 md:pt-32 pb-20 bg-[#0f172a] text-white">
-        <div className="px-6 md:px-8 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-20 items-center min-h-[70vh]">
+
+      <section id="about" className="pt-24 md:pt-32 pb-12 bg-[#0f172a] text-white">
+        <div className="px-6 md:px-8 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-20 items-center min-h-[60vh]">
           <div className="space-y-6 md:space-y-10 order-2 md:order-1 pt-8 md:pt-0">
             <div className="inline-block px-4 py-2 bg-white/10 rounded-full border border-white/20 text-teal-400 font-medium text-sm tracking-wide uppercase">Product Leader</div>
-            <h1 className="text-4xl md:text-6xl lg:text-8xl font-serif font-bold leading-[0.9]">I turn product chaos into <span className="text-[#258c88]">measurable growth.</span></h1>
+            <h1 className="text-3xl md:text-6xl lg:text-8xl font-serif font-bold leading-[0.9]">I turn product chaos into <span className="text-[#258c88]">measurable growth.</span></h1>
             <p className="text-lg md:text-2xl text-slate-400 font-light">As a Data-driven Product Leader, I investigate metrics to uncover the "why" behind the numbers, building products that truly resonate with users.</p>
           </div>
           <div className="relative order-1 md:order-2 flex justify-center mt-12 md:mt-0">
             <div className="relative group w-72 md:w-96">
-              {/* Glow constrained for mobile */}
-              <div className="absolute -inset-4 top-0 h-64 md:h-96 w-full bg-teal-500/20 rounded-[40%_60%_70%_30%_/_40%_50%_60%_50%] blur-3xl"></div>
+              <div className="absolute -inset-x-10 -top-10 h-140 bg-teal-500/20 rounded-[40%_60%_70%_30%_/_40%_50%_60%_50%] blur-2xl"></div>
               <div className="relative p-2 bg-slate-900 rounded-[2rem] shadow-2xl rotate-3">
                 <div className="overflow-hidden rounded-[1.8rem] border-2 border-slate-700/50">
                   <img src={profileimage} alt="Miss Mbuvi" className="w-full aspect-[4/5] object-cover" />
                 </div>
               </div>
-            <div className="flex gap-6 mt-8">
-            <a href="https://www.linkedin.com/in/mary-mbuvi-176882aa" target="_blank" rel="noreferrer" className="p-3 md:p-4 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:border-[#258c88] hover:text-[#258c88] transition-all">
-              <LinkedinIcon />
-            </a>
-            <a href="https://github.com/MaryMbuvi" target="_blank" rel="noreferrer" className="p-3 md:p-4 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:border-[#258c88] hover:text-[#258c88] transition-all">
-              <GithubIcon />
-            </a>
-          </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="toolkit" className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
-        <header className="mb-12"><h3 className="text-3xl md:text-5xl font-serif font-bold text-slate-900">How I Help</h3></header>
+      <section id="toolkit" className="py-12 px-4 md:px-8 max-w-7xl mx-auto">
+        <header className="mb-8"><h3 className="text-2xl md:text-5xl font-serif font-bold text-slate-900">How I Help</h3></header>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((item, idx) => (
             <div key={idx} className="p-8 bg-slate-50 rounded-[2rem] hover:bg-white hover:shadow-xl transition-all border border-slate-100">
@@ -162,32 +165,46 @@ export default function App() {
         </div>
       </section>
 
-      <section id="work" className="py-20 bg-slate-100">
+      <section id="work" className="py-12 bg-slate-100">
         <div className="px-4 md:px-8 max-w-7xl mx-auto">
-          <h3 className="text-4xl md:text-6xl font-serif font-bold mb-12">Featured Projects</h3>
-          <div className="space-y-8">
-            {workCaseStudies.map((work, idx) => (
-              <div key={idx} className="bg-white p-6 md:p-10 rounded-[2rem] border border-slate-200">
-                <div className="flex flex-col md:flex-row gap-8">
-                  <div className="md:w-1/3">
-                    <div className="text-4xl font-serif font-bold text-slate-200 mb-4">0{idx + 1}</div>
-                    <img src={work.image} alt={work.title} className="w-full aspect-video object-cover rounded-2xl shadow-lg" />
-                  </div>
-                  <div className="md:w-2/3 space-y-4">
-                    <h4 className="text-2xl md:text-3xl font-bold font-serif text-[#258c88]">{work.title}</h4>
-                    <p className="text-base md:text-lg text-slate-700 leading-relaxed">{work.content}</p>
-                    <div className="grid sm:grid-cols-2 gap-3 pt-4">
-                      {work.results.map((res, i) => (
-                        <div key={i} className="flex items-center gap-3 p-3 bg-teal-50/50 border border-teal-100 rounded-xl">
-                          <span className="text-[#258c88] font-bold">↗</span>
-                          <span className="text-slate-800 text-sm font-medium">{res}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+          <h3 className="text-3xl md:text-5xl font-serif font-bold mb-8">Featured Projects</h3>
+          <p className="md:hidden text-slate-500 italic mb-6">Swipe left to explore →</p>
+          
+          {/* Main Card View */}
+          <div className="bg-white p-6 md:p-10 rounded-[2rem] border border-slate-200 shadow-lg">
+            <div className="flex flex-col md:flex-row gap-8">
+                <div className="md:w-1/3">
+                    <div className="text-4xl font-serif font-bold text-slate-200 mb-4">0{currentIndex + 1}</div>
+                    <img src={workCaseStudies[currentIndex].image} alt={workCaseStudies[currentIndex].title} className="w-full aspect-video object-cover rounded-2xl shadow-lg" />
                 </div>
-              </div>
-            ))}
+                <div className="md:w-2/3 space-y-4">
+                    <h4 className="text-2xl md:text-3xl font-bold font-serif text-[#258c88]">{workCaseStudies[currentIndex].title}</h4>
+                    <p className="text-base md:text-lg text-slate-700 leading-relaxed">{workCaseStudies[currentIndex].content}</p>
+                    <div className="grid sm:grid-cols-2 gap-3 pt-4">
+                        {workCaseStudies[currentIndex].results.map((res, i) => (
+                            <div key={i} className="flex items-center gap-3 p-3 bg-teal-50/50 border border-teal-100 rounded-xl">
+                                <span className="text-[#258c88] font-bold">↗</span>
+                                <span className="text-slate-800 text-sm font-medium">{res}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          {/* Navigation Controls */}
+          <div className="flex justify-center items-center gap-6 mt-8">
+            <button onClick={prevProject} className="p-4 bg-white rounded-full shadow-md border border-slate-200 text-slate-600 hover:text-[#258c88] hover:shadow-lg transition-all active:scale-95">
+                <ArrowLeft />
+            </button>
+            <div className="flex gap-2">
+                {workCaseStudies.map((_, i) => (
+                    <div key={i} className={`h-2.5 w-2.5 rounded-full transition-all ${i === currentIndex ? 'bg-[#258c88] w-6' : 'bg-slate-300'}`}></div>
+                ))}
+            </div>
+            <button onClick={nextProject} className="p-4 bg-white rounded-full shadow-md border border-slate-200 text-slate-600 hover:text-[#258c88] hover:shadow-lg transition-all active:scale-95">
+                <ArrowRight />
+            </button>
           </div>
         </div>
       </section>
@@ -195,7 +212,7 @@ export default function App() {
       <section id="contact" className="py-16 md:py-24 px-4 bg-[#0f172a] text-white rounded-t-[2.5rem] md:rounded-t-[4rem]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
-            <h3 className="text-3xl md:text-5xl font-serif font-bold mb-4 italic">Ready for your next challenge?</h3>
+            <h3 className="text-2xl md:text-5xl font-serif font-bold mb-4 italic">Ready for your next challenge?</h3>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6 bg-white/5 p-6 md:p-10 rounded-3xl border border-white/10">
@@ -204,15 +221,28 @@ export default function App() {
               <input required name="email" type="email" placeholder="Email" className="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-[#258c88]" />
             </div>
             <select required name="service" className="w-full bg-slate-800 border border-white/10 p-4 rounded-xl outline-none text-white focus:border-[#258c88] cursor-pointer">
-                <option value="">Select a service...</option>
-                <option value="Product Discovery">Product Discovery</option>
-                <option value="Strategy">Strategy</option>
+                <option value="">Select a focus area...</option>
+                <option value="Product Discovery & Validation">Product Discovery & Validation</option>
+                <option value="Strategy & Development">Strategy & Development</option>
+                <option value="Metrics & Growth">Metrics & Growth</option>
+                <option value="Mentorship & Coaching">Mentorship & Coaching</option>
             </select>
             <textarea required name="message" rows={4} placeholder="Message" className="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-[#258c88]"></textarea>
             <button disabled={submitting} className="w-full py-4 bg-[#258c88] text-white rounded-xl font-bold hover:bg-[#1a6460] transition-all">
               {submitting ? "Sending..." : "Send Inquiry"}
             </button>
           </form>
+
+          {status === 'success' && (
+            <div className="mt-8 p-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-2xl text-center font-bold">
+              Thanks for reaching out! I'll be in touch soon.
+            </div>
+          )}
+          {status === 'error' && (
+            <div className="mt-8 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-2xl text-center font-bold">
+              Oops! Something went wrong.
+            </div>
+          )}
         </div>
 
         <footer className="mt-16 text-center border-t border-white/10 pt-8 text-slate-500 text-sm">
