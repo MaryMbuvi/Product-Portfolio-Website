@@ -133,7 +133,7 @@ export default function App() {
         </div>
       </nav>
 
-      <section id="about" className="pt-24 md:pt-32 pb-12 bg-[#0f172a] text-white">
+      <section id="about" className="pt-24 md:pt-50 pb-12 bg-[#0f172a] text-white">
         <div className="px-6 md:px-8 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-20 items-center min-h-[60vh]">
           <div className="space-y-6 md:space-y-10 order-2 md:order-1 pt-8 md:pt-0">
             <h1 className="text-3xl md:text-6xl lg:text-8xl font-serif font-bold leading-[0.9]">I turn product chaos into <span className="text-[#258c88]">measurable growth.</span></h1>
