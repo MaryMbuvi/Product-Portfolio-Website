@@ -41,10 +41,9 @@ export default function App() {
   const [status, setStatus] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   
-  // Refs to track swipe
-  const touchStartX = useRef(null);
-  const touchEndX = useRef(null);
-  const minSwipeDistance = 40;
+  const touchStartX = useRef(0);
+  const tools = ['Typeform', 'Kobo', 'Figma', 'Mural', 'Lucidchart', 'Jira', 'Trello', 'Microsoft Clarity', 'Google Analytics', 'SQL', 'Looker Studio', 'Tableau', 'Mixpanel', 'Notion', 'AWS', 'Git'];
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,7 +72,7 @@ export default function App() {
   const services = [
     { Icon: DiscoveryIcon, title: "Product Discovery", desc: "I facilitate deep-dive research to uncover latent customer needs, ensuring high-impact validation before engineering begins." },
     { Icon: StrategyIcon, title: "Strategy & Dev", desc: "Translating business goals into a coherent vision, I oversee the end-to-end lifecycle to ensure high-quality execution." },
-    { Icon: MetricsIcon, title: "Metrics & Growth", desc: "Building tracking frameworks that look beyond vanity metrics to identify real engagement loops and drive sustainable value." },
+    { Icon: MetricsIcon, title: "Metrics & Growth", desc: "Designing robust tracking frameworks that transform complex user and product datasets into clear, actionable insights." },
     { Icon: MentorshipIcon, title: "Product Mentorship", desc: "Guiding diverse professionals into mastering product strategy, user-centric development, and high-impact problem-solving." }
   ];
 
@@ -101,7 +100,6 @@ export default function App() {
   const nextProject = () => setCurrentIndex((prev) => (prev + 1) % workCaseStudies.length);
   const prevProject = () => setCurrentIndex((prev) => (prev - 1 + workCaseStudies.length) % workCaseStudies.length);
 
-  // Swipe handlers
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
@@ -110,7 +108,6 @@ export default function App() {
     const touchEndX = e.changedTouches[0].clientX;
     const delta = touchEndX - touchStartX.current;
     
-    // Threshold to prevent accidental swipes
     if (Math.abs(delta) > 50) {
       if (delta > 0) prevProject();
       else nextProject();
@@ -119,10 +116,10 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#FDFDFC] text-[#0f172a] font-sans antialiased selection:bg-[#258c88] selection:text-white overflow-x-hidden">
-      <style>{`
-        html { scroll-behavior: smooth; }
-      `}</style>
+      <style>{`html { scroll-behavior: smooth; } @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .animate-marquee { animation: marquee 15s linear infinite; }`}</style>
 
+      {/* Nav Section */}
       <nav className="fixed top-0 left-0 w-full z-50 bg-[#0f172a]/80 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 md:h-20 flex items-center justify-between">
           <a href="#" className="text-xl md:text-2xl font-bold tracking-tight text-white">Miss Mbuvi</a>
@@ -136,24 +133,13 @@ export default function App() {
         </div>
       </nav>
 
-      {isMenuOpen && (
-        <div className="fixed inset-0 top-16 z-40 bg-[#0f172a] p-8 flex flex-col gap-6 md:hidden">
-            <a href="#about" onClick={() => setIsMenuOpen(false)} className="text-2xl text-white font-medium">About</a>
-            <a href="#toolkit" onClick={() => setIsMenuOpen(false)} className="text-2xl text-white font-medium">How I Help</a>
-            <a href="#work" onClick={() => setIsMenuOpen(false)} className="text-2xl text-white font-medium">Featured Projects</a>
-            <a href="#contact" onClick={() => setIsMenuOpen(false)} className="mt-auto px-6 py-4 bg-[#258c88] text-center text-white rounded-2xl text-lg">Let's Connect</a>
-        </div>
-      )}
-
       <section id="about" className="pt-24 md:pt-32 pb-12 bg-[#0f172a] text-white">
         <div className="px-6 md:px-8 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-20 items-center min-h-[60vh]">
           <div className="space-y-6 md:space-y-10 order-2 md:order-1 pt-8 md:pt-0">
-            <div className="inline-block px-4 py-2 bg-white/10 rounded-full border border-white/20 text-teal-400 font-medium text-sm tracking-wide uppercase">Product Leader</div>
             <h1 className="text-3xl md:text-6xl lg:text-8xl font-serif font-bold leading-[0.9]">I turn product chaos into <span className="text-[#258c88]">measurable growth.</span></h1>
             <p className="text-lg md:text-2xl text-slate-400 font-light">As a Data-driven Product Leader, I investigate metrics to uncover the "why" behind the numbers, building products that truly resonate with users.</p>
           </div>
           <div className="relative order-1 md:order-2 flex flex-col items-center mt-12 md:mt-0">
-            {/* Profile Card Wrapper */}
             <div className="relative group w-72 md:w-96">
               <div className="absolute -inset-x-10 -top-10 h-140 bg-teal-500/20 rounded-[40%_60%_70%_30%_/_40%_50%_60%_50%] blur-2xl"></div>
               <div className="relative p-2 bg-slate-900 rounded-[2rem] shadow-2xl rotate-3">
@@ -162,30 +148,17 @@ export default function App() {
                 </div>
               </div>
             </div>
-  {/* Social Links - Now outside the card wrapper for better click interaction */}
-  <div className="flex gap-6 mt-8 z-10">
-    <a 
-      href="https://www.linkedin.com/in/mary-mbuvi-176882aa" 
-      target="_blank" 
-      rel="noreferrer" 
-      className="p-4 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:border-[#258c88] hover:text-[#258c88] transition-all"
-    >
-      <LinkedinIcon />
-    </a>
-    <a 
-      href="https://github.com/MaryMbuvi" 
-      target="_blank" 
-      rel="noreferrer" 
-      className="p-4 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:border-[#258c88] hover:text-[#258c88] transition-all"
-    >
-      <GithubIcon />
-    </a>
-  </div>
-</div>
+            <div className="flex gap-6 mt-8 z-10">
+              <a href="https://www.linkedin.com/in/mary-mbuvi-176882aa" target="_blank" rel="noreferrer" className="p-4 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:border-[#258c88] hover:text-[#258c88] transition-all"><LinkedinIcon /></a>
+              <a href="https://github.com/MaryMbuvi" target="_blank" rel="noreferrer" className="p-4 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:border-[#258c88] hover:text-[#258c88] transition-all"><GithubIcon /></a>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section id="toolkit" className="py-12 px-4 md:px-8 max-w-7xl mx-auto">
+
+      {/* How I Help*/}
+       <section id="toolkit" className="py-12 px-4 md:px-8 max-w-7xl mx-auto">
         <header className="mb-8"><h3 className="text-2xl md:text-5xl font-serif font-bold text-slate-900">How I Help</h3></header>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((item, idx) => (
@@ -198,33 +171,52 @@ export default function App() {
         </div>
       </section>
 
-      <section id="work" className="py-12 bg-slate-100">
-        <div className="px-4 md:px-8 max-w-7xl mx-auto">
-          <h3 className="text-3xl md:text-5xl font-serif font-bold mb-8">Featured Projects</h3>
-          <p className="md:hidden text-slate-500 italic mb-6">Swipe to explore more →</p>
+         {/* Tool Marquee */}
+      <div className="py-4 border-y border-slate-200 bg-slate-50 overflow-hidden">
+        <div className="flex animate-marquee gap-8 whitespace-nowrap">
+            {[...tools, ...tools].map((tool, i) => (
+                <span key={i} className="text-[#258c88] text-sm font-mono tracking-widest uppercase">{tool} •</span>
+            ))}
+        </div>
+      </div>
 
-          {/* Main Card View with touch handlers */}
-         <div
-  onTouchStart={handleTouchStart}
-  onTouchMove={(e) => e.preventDefault()}
-  onTouchEnd={handleTouchEnd}
-  className="bg-white p-6 md:p-10 rounded-[2rem] border border-slate-200 shadow-lg touch-pan-y select-none"
-  style={{
-    touchAction: "pan-y",
-    WebkitUserSelect: "none",
-    WebkitTouchCallout: "none",
-  }}
->
-            <div className="flex flex-col md:flex-row gap-8">
-                <div className="md:w-1/3">
-                    <div className="text-4xl font-serif font-bold text-slate-200 mb-4">0{currentIndex + 1}</div>
-                    <img src={workCaseStudies[currentIndex].image} alt={workCaseStudies[currentIndex].title} className="w-full aspect-video object-cover rounded-2xl shadow-lg" />
+
+      {/* Featured Projects Section: Mobile Carousel / Desktop Stacked List */}
+      <section id="work" className="py-12 md:py-15 bg-slate-100">
+        <div className="px-4 md:px-8 max-w-7xl mx-auto">
+          <h3 className="text-3xl md:text-5xl font-serif font-bold mb-8 md:mb-16">Featured Projects</h3>
+          
+          {/* MOBILE: Carousel */}
+            <div className="md:hidden hide-scrollbar flex flex-row overflow-x-auto gap-6 pb-6 snap-x snap-mandatory touch-pan-x">
+            {workCaseStudies.map((work, idx) => (
+              <div key={idx} className="snap-center w-[85vw] flex-shrink-0 bg-white p-6 rounded-[2rem] border border-slate-200 shadow-lg">
+                <img src={work.image} alt={work.title} className="w-full aspect-video object-cover rounded-2xl shadow-lg mb-6" />
+                <h4 className="text-xl font-bold font-serif text-[#258c88] mb-2">{work.title}</h4>
+                <p className="text-sm text-slate-700 mb-4">{work.content}</p>
+                <div className="grid grid-cols-1 gap-2">
+                    {work.results.map((res, i) => (
+                        <div key={i} className="flex items-center gap-2 p-2 bg-teal-50/50 border border-teal-100 rounded-lg">
+                            <span className="text-[#258c88] font-bold text-xs">↗</span>
+                            <span className="text-slate-800 text-[10px] font-medium">{res}</span>
+                        </div>
+                    ))}
                 </div>
-                <div className="md:w-2/3 space-y-4">
-                    <h4 className="text-2xl md:text-3xl font-bold font-serif text-[#258c88]">{workCaseStudies[currentIndex].title}</h4>
-                    <p className="text-base md:text-lg text-slate-700 leading-relaxed">{workCaseStudies[currentIndex].content}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* DESKTOP: Vertical Stacked List */}
+          <div className="hidden md:block space-y-16">
+            {workCaseStudies.map((work, idx) => (
+              <div key={idx} className="bg-white p-10 rounded-[2rem] border border-slate-200 shadow-md flex gap-10 items-center">
+                <div className="w-1/2">
+                    <img src={work.image} alt={work.title} className="w-full aspect-video object-cover rounded-2xl shadow-lg" />
+                </div>
+                <div className="w-1/2 space-y-4">
+                    <h4 className="text-3xl font-bold font-serif text-[#258c88]">{work.title}</h4>
+                    <p className="text-lg text-slate-700 leading-relaxed">{work.content}</p>
                     <div className="grid sm:grid-cols-2 gap-3 pt-4">
-                        {workCaseStudies[currentIndex].results.map((res, i) => (
+                        {work.results.map((res, i) => (
                             <div key={i} className="flex items-center gap-3 p-3 bg-teal-50/50 border border-teal-100 rounded-xl">
                                 <span className="text-[#258c88] font-bold">↗</span>
                                 <span className="text-slate-800 text-sm font-medium">{res}</span>
@@ -232,22 +224,8 @@ export default function App() {
                         ))}
                     </div>
                 </div>
-            </div>
-          </div>
-
-          {/* Navigation Controls */}
-          <div className="flex justify-center items-center gap-6 mt-8">
-            <button onClick={prevProject} className="p-4 bg-white rounded-full shadow-md border border-slate-200 text-slate-600 hover:text-[#258c88] hover:shadow-lg transition-all active:scale-95">
-                <ArrowLeft />
-            </button>
-            <div className="flex gap-2">
-                {workCaseStudies.map((_, i) => (
-                    <div key={i} className={`h-2.5 w-2.5 rounded-full transition-all ${i === currentIndex ? 'bg-[#258c88] w-6' : 'bg-slate-300'}`}></div>
-                ))}
-            </div>
-            <button onClick={nextProject} className="p-4 bg-white rounded-full shadow-md border border-slate-200 text-slate-600 hover:text-[#258c88] hover:shadow-lg transition-all active:scale-95">
-                <ArrowRight />
-            </button>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -283,7 +261,7 @@ export default function App() {
           )}
           {status === 'error' && (
             <div className="mt-8 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-2xl text-center font-bold">
-              Oops! Something went wrong.
+              Oops! Something went wrong. Please check your internet connection and try again.
             </div>
           )}
         </div>
