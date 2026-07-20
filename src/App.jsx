@@ -36,6 +36,7 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -111,7 +112,7 @@ export default function App() {
       <section id="about" className="pt-24 md:pt-32 pb-12 bg-[#0f172a] text-white">
         <div className="px-6 md:px-8 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-20 items-center min-h-[60vh]">
           <div className="space-y-6 md:space-y-10 order-2 md:order-1 pt-8 md:pt-0">
-            <div className="inline-block px-4 py-2 bg-white/10 rounded-full border border-white/20 text-teal-400 font-medium text-sm tracking-wide uppercase">Product Leader</div>
+            <div className="inline-block px-4 py-2 bg-white/10 rounded-full text-teal-400 font-medium text-sm tracking-wide">Hello! I'm Miss Mbuvi</div>
             <h1 className="text-3xl md:text-6xl lg:text-8xl font-serif font-bold leading-[0.9]">I turn product chaos into <span className="text-[#258c88]">measurable growth.</span></h1>
             <p className="text-lg md:text-2xl text-slate-300 font-light">As a Data-driven Product Leader, I investigate metrics to uncover the "why" behind the numbers, building products that truly resonate with users.</p>
           </div>
@@ -125,7 +126,7 @@ export default function App() {
               </div>
             </div>
             <div className="flex gap-6 mt-8 z-10">
-              <a href="linkedin.com/in/mary-mbuvi-596255126" target="_blank" rel="noreferrer" className="p-4 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:border-[#258c88] hover:text-[#258c88] transition-all"><LinkedinIcon /></a>
+              <a href="https://linkedin.com/in/mary-mbuvi-596255126" target="_blank" rel="noreferrer" className="p-4 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:border-[#258c88] hover:text-[#258c88] transition-all"><LinkedinIcon /></a>
               <a href="https://github.com/MaryMbuvi" target="_blank" rel="noreferrer" className="p-4 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:border-[#258c88] hover:text-[#258c88] transition-all"><GithubIcon /></a>
             </div>
           </div>
@@ -163,12 +164,19 @@ export default function App() {
         <div className="px-4 md:px-8 max-w-7xl mx-auto">
           <h3 className="text-3xl md:text-5xl font-serif font-bold mb-8">Featured Projects</h3>
           
-          {/* Mobile Swipeable Carousel (Native Scroll) */}
+          {/* Mobile Swipeable Carousel */}
           <div className="md:hidden">
             <p className="text-slate-500 italic mb-6">Swipe to see more →</p>
-            <div className="hide-scrollbar flex flex-row overflow-x-auto gap-6 pb-6 snap-x snap-mandatory">
+            <div 
+                onScroll={(e) => {
+                  const container = e.currentTarget;
+                  const index = Math.round(container.scrollLeft / container.offsetWidth);
+                  setCurrentIndex(index);
+                }}
+                className="hide-scrollbar flex flex-row overflow-x-auto gap-6 pb-6 snap-x snap-mandatory touch-pan-y"
+            >
                 {workCaseStudies.map((work, idx) => (
-                <div key={idx} className="snap-center w-[85vw] flex-shrink-0 bg-white p-6 rounded-[2rem] border border-slate-200 shadow-lg">
+                <div key={idx} className="snap-center w-[85vw] flex-shrink-0 bg-white p-6 rounded-[2rem] shadow-lg">
                     <img src={work.image} alt={work.title} className="w-full h-40 object-cover rounded-2xl mb-6 shadow-inner" />
                     <h4 className="text-xl font-bold font-serif text-[#258c88] mb-2">{work.title}</h4>
                     <p className="text-sm text-slate-700 mb-4">{work.content}</p>
@@ -176,11 +184,21 @@ export default function App() {
                         {work.results.map((res, i) => (
                             <div key={i} className="flex items-center gap-2 p-2 bg-teal-50/50 border border-teal-100 rounded-lg">
                                 <span className="text-[#258c88] font-bold text-xs">↗</span>
-                                <span className="text-slate-800 text-[12px] font-medium">{res}</span>
+                                <span className="text-slate-800 text-[11px] font-medium">{res}</span>
                             </div>
                         ))}
                     </div>
                 </div>
+                ))}
+            </div>
+
+            {/* Carousel Dots */}
+            <div className="flex justify-center gap-2 mb-8">
+                {workCaseStudies.map((_, idx) => (
+                <div 
+                    key={idx} 
+                    className={`h-2 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-6 bg-[#258c88]' : 'w-2 bg-slate-300'}`}
+                />
                 ))}
             </div>
           </div>
