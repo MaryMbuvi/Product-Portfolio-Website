@@ -173,7 +173,7 @@ export default function App() {
                   const index = Math.round(container.scrollLeft / container.offsetWidth);
                   setCurrentIndex(index);
                 }}
-                className="hide-scrollbar flex flex-row overflow-x-auto gap-6 pb-6 snap-x snap-mandatory touch-pan-x"
+                className="hide-scrollbar flex flex-row overflow-x-auto gap-6 pb-6 snap-x snap-mandatory touch-pan-x touch-pan-y"
             >
                 {workCaseStudies.map((work, idx) => (
                 <div key={idx} className="snap-center w-[85vw] flex-shrink-0 bg-white p-6 rounded-[2rem] shadow-lg">
