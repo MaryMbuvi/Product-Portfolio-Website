@@ -111,8 +111,8 @@ export default function App() {
       {/* About Section */}
       <section id="about" className="pt-24 md:pt-32 pb-12 bg-[#0f172a] text-white">
         <div className="px-6 md:px-8 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-20 items-center min-h-[60vh]">
-          <div className="space-y-6 md:space-y-10 order-2 md:order-1 pt-8 md:pt-0">
-            <div className="inline-block px-4 py-2 bg-white/10 rounded-full text-teal-400 font-medium text-sm tracking-wide">Hello! I'm Miss Mbuvi</div>
+          <div className="space-y-6 md:space-y-10 order-2 md:order-1 pt-6 md:pt-0">
+            <div className="inline-block px-4 py-2 bg-white/10 rounded-full text-teal-400 font-medium text-sm tracking-wide">Hello! I'm miss Mbuvi</div>
             <h1 className="text-3xl md:text-6xl lg:text-8xl font-serif font-bold leading-[0.9]">I turn product chaos into <span className="text-[#258c88]">measurable growth.</span></h1>
             <p className="text-lg md:text-2xl text-slate-300 font-light">As a Data-driven Product Leader, I investigate metrics to uncover the "why" behind the numbers, building products that truly resonate with users.</p>
           </div>
@@ -173,7 +173,7 @@ export default function App() {
                   const index = Math.round(container.scrollLeft / container.offsetWidth);
                   setCurrentIndex(index);
                 }}
-                className="hide-scrollbar flex flex-row overflow-x-auto gap-6 pb-6 snap-x snap-mandatory touch-pan-y"
+                className="hide-scrollbar flex flex-row overflow-x-auto gap-6 pb-6 snap-x snap-mandatory touch-pan-x"
             >
                 {workCaseStudies.map((work, idx) => (
                 <div key={idx} className="snap-center w-[85vw] flex-shrink-0 bg-white p-6 rounded-[2rem] shadow-lg">
@@ -184,7 +184,7 @@ export default function App() {
                         {work.results.map((res, i) => (
                             <div key={i} className="flex items-center gap-2 p-2 bg-teal-50/50 border border-teal-100 rounded-lg">
                                 <span className="text-[#258c88] font-bold text-xs">↗</span>
-                                <span className="text-slate-800 text-[11px] font-medium">{res}</span>
+                                <span className="text-slate-800 text-[12px] font-medium">{res}</span>
                             </div>
                         ))}
                     </div>
