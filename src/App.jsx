@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import profileimage from './assets/MMary.png';
 import BigData from './assets/BigData.png';
 import HealthApp from './assets/HealthApp.png';
@@ -26,9 +26,6 @@ const X = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
 );
 
-const ArrowLeft = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>;
-const ArrowRight = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>;
-
 // --- Strategic Service Icons ---
 const DiscoveryIcon = () => <svg className="w-8 h-8 md:w-10 md:h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>;
 const StrategyIcon = () => <svg className="w-8 h-8 md:w-10 md:h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>;
@@ -39,9 +36,6 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  
-  const touchStartX = useRef(0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -80,23 +74,7 @@ export default function App() {
     { title: "Product Analytics & Reportings", image: ProductAnalytics, content: "Standardized performance metrics via Looker Studio to improve organizational visibility. Developed a 'Beyond Bias' dashboard to track service equity, ensuring transparency for donors and streamlining future implementation planning and program expansion.", results: ["Standardized reporting frameworks across portfolios", "Enhanced donor and stakeholder transparency", "Reduced time spent on quality-of-service analysis"] },
   ];
 
-  const nextProject = () => setCurrentIndex((prev) => (prev + 1) % workCaseStudies.length);
-  const prevProject = () => setCurrentIndex((prev) => (prev - 1 + workCaseStudies.length) % workCaseStudies.length);
-
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = (e) => {
-    const touchEndX = e.changedTouches[0].clientX;
-    const delta = touchEndX - touchStartX.current;
-    if (Math.abs(delta) > 50) {
-      if (delta > 0) prevProject();
-      else nextProject();
-    }
-  };
-
-   return (
+  return (
     <div className="min-h-screen bg-[#FDFDFC] text-[#0f172a] font-sans antialiased overflow-x-hidden selection:bg-[#258c88] selection:text-white">
       <style>{`
         html { scroll-behavior: smooth; }
@@ -185,14 +163,10 @@ export default function App() {
         <div className="px-4 md:px-8 max-w-7xl mx-auto">
           <h3 className="text-3xl md:text-5xl font-serif font-bold mb-8">Featured Projects</h3>
           
-          {/* Mobile Swipeable Carousel */}
+          {/* Mobile Swipeable Carousel (Native Scroll) */}
           <div className="md:hidden">
             <p className="text-slate-500 italic mb-6">Swipe to see more →</p>
-            <div 
-                onTouchStart={handleTouchStart} 
-                onTouchEnd={handleTouchEnd}
-                className="hide-scrollbar flex flex-row overflow-x-auto gap-6 pb-6 snap-x snap-mandatory touch-pan-y"
-            >
+            <div className="hide-scrollbar flex flex-row overflow-x-auto gap-6 pb-6 snap-x snap-mandatory">
                 {workCaseStudies.map((work, idx) => (
                 <div key={idx} className="snap-center w-[85vw] flex-shrink-0 bg-white p-6 rounded-[2rem] border border-slate-200 shadow-lg">
                     <img src={work.image} alt={work.title} className="w-full h-40 object-cover rounded-2xl mb-6 shadow-inner" />
@@ -202,7 +176,7 @@ export default function App() {
                         {work.results.map((res, i) => (
                             <div key={i} className="flex items-center gap-2 p-2 bg-teal-50/50 border border-teal-100 rounded-lg">
                                 <span className="text-[#258c88] font-bold text-xs">↗</span>
-                                <span className="text-slate-800 text-[10px] font-medium">{res}</span>
+                                <span className="text-slate-800 text-[12px] font-medium">{res}</span>
                             </div>
                         ))}
                     </div>
