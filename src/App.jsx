@@ -179,12 +179,12 @@ export default function App() {
                 <div key={idx} className="snap-center w-[85vw] flex-shrink-0 bg-white p-6 rounded-[2rem] shadow-lg">
                     <img src={work.image} alt={work.title} className="w-full h-40 object-cover rounded-2xl mb-6 shadow-inner" />
                     <h4 className="text-xl font-bold font-serif text-[#258c88] mb-2">{work.title}</h4>
-                    <p className="text-sm text-slate-700 mb-4">{work.content}</p>
+                    <p className="text-base text-slate-700 mb-4">{work.content}</p>
                     <div className="grid grid-cols-1 gap-2">
                         {work.results.map((res, i) => (
                             <div key={i} className="flex items-center gap-2 p-2 bg-teal-50/50 border border-teal-100 rounded-lg">
                                 <span className="text-[#258c88] font-bold text-xs">↗</span>
-                                <span className="text-slate-800 text-[12px] font-medium">{res}</span>
+                                <span className="text-slate-800 text-[13px] font-medium">{res}</span>
                             </div>
                         ))}
                     </div>
