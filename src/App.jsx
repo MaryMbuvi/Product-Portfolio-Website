@@ -42,8 +42,6 @@ export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
   
   const touchStartX = useRef(0);
-  const tools = ['Typeform', 'Kobo', 'Figma', 'Mural', 'Lucidchart', 'Jira', 'Trello', 'Microsoft Clarity', 'Google Analytics', 'SQL', 'Looker Studio', 'Tableau', 'Mixpanel', 'Notion', 'AWS', 'Git'];
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,29 +70,14 @@ export default function App() {
   const services = [
     { Icon: DiscoveryIcon, title: "Product Discovery", desc: "I facilitate deep-dive research to uncover latent customer needs, ensuring high-impact validation before engineering begins." },
     { Icon: StrategyIcon, title: "Strategy & Dev", desc: "Translating business goals into a coherent vision, I oversee the end-to-end lifecycle to ensure high-quality execution." },
-    { Icon: MetricsIcon, title: "Metrics & Growth", desc: "Designing robust tracking frameworks that transform complex user and product datasets into clear, actionable insights." },
+    { Icon: MetricsIcon, title: "Metrics & Growth", desc: "Building tracking frameworks that look beyond vanity metrics to identify real engagement loops and drive sustainable value." },
     { Icon: MentorshipIcon, title: "Product Mentorship", desc: "Guiding diverse professionals into mastering product strategy, user-centric development, and high-impact problem-solving." }
   ];
 
   const workCaseStudies = [
-    {
-      title: "Scaling Health App Access",
-      image: HealthApp,
-      content: "Optimized a digital health platform for low-connectivity environments to drive higher engagement. Through user-led research and the integration of a strategic USSD feature, I helped remove significant access barriers and aligned product performance with actual user requirements.",
-      results: ["Successfully launched USSD feature", "10% increase in app content engagement", "Significant increase in total active users"]
-    },
-    {
-      title: "Big Data Analysis Platform",
-      image: BigData,
-      content: "Spearheaded a Big Data analytics platform that transforms fragmented data streams into actionable intelligence. Key capabilities include user profiling, link analysis, and automated reporting, providing critical insights for high-stakes environments.",
-      results: ["Delivered 3 analytics modules from research to launch", "Scaled our user base 5x from 4 to 20 clients", "Reduced analysis time by 50%"]
-    },
-    {
-      title: "Product Analytics & Reportings",
-      image: ProductAnalytics,
-      content: "Standardized performance metrics via Looker Studio to improve organizational visibility. Developed a 'Beyond Bias' dashboard to track service equity, ensuring transparency for donors and streamlining future implementation planning and program expansion.",
-      results: ["Standardized reporting frameworks across portfolios", "Enhanced donor and stakeholder transparency", "Reduced time spent on quality-of-service analysis"]
-    },
+    { title: "Scaling Health App Access", image: HealthApp, content: "Optimized a digital health platform for low-connectivity environments to drive higher engagement. Through user-led research and the integration of a strategic USSD feature, I helped remove significant access barriers and aligned product performance with actual user requirements.", results: ["Successfully launched USSD feature", "10% increase in app content engagement", "Significant increase in total active users"] },
+    { title: "Big Data Analysis Platform", image: BigData, content: "Spearheaded a Big Data analytics platform that transforms fragmented data streams into actionable intelligence. Key capabilities include user profiling, link analysis, and automated reporting, providing critical insights for high-stakes environments.", results: ["Delivered 3 analytics modules from research to launch", "Scaled our user base 5x from 4 to 20 clients", "Reduced analysis time by 50%"] },
+    { title: "Product Analytics & Reportings", image: ProductAnalytics, content: "Standardized performance metrics via Looker Studio to improve organizational visibility. Developed a 'Beyond Bias' dashboard to track service equity, ensuring transparency for donors and streamlining future implementation planning and program expansion.", results: ["Standardized reporting frameworks across portfolios", "Enhanced donor and stakeholder transparency", "Reduced time spent on quality-of-service analysis"] },
   ];
 
   const nextProject = () => setCurrentIndex((prev) => (prev + 1) % workCaseStudies.length);
@@ -107,7 +90,6 @@ export default function App() {
   const handleTouchEnd = (e) => {
     const touchEndX = e.changedTouches[0].clientX;
     const delta = touchEndX - touchStartX.current;
-    
     if (Math.abs(delta) > 50) {
       if (delta > 0) prevProject();
       else nextProject();
@@ -116,8 +98,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#FDFDFC] text-[#0f172a] font-sans antialiased selection:bg-[#258c88] selection:text-white overflow-x-hidden">
-      <style>{`html { scroll-behavior: smooth; } @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-marquee { animation: marquee 15s linear infinite; }`}</style>
+      <style>{`
+        html { scroll-behavior: smooth; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .animate-marquee { animation: marquee 15s linear infinite; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
 
       {/* Nav Section */}
       <nav className="fixed top-0 left-0 w-full z-50 bg-[#0f172a]/80 backdrop-blur-md border-b border-white/10">
@@ -133,11 +120,23 @@ export default function App() {
         </div>
       </nav>
 
-      <section id="about" className="pt-24 md:pt-50 pb-12 bg-[#0f172a] text-white">
+      {/* Fixed Small-Text Mobile Menu */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 top-16 z-40 bg-[#0f172a] p-6 flex flex-col gap-4 md:hidden animate-in fade-in duration-300">
+            <a href="#about" onClick={() => setIsMenuOpen(false)} className="text-lg text-white font-medium border-b border-white/10 pb-3">About</a>
+            <a href="#toolkit" onClick={() => setIsMenuOpen(false)} className="text-lg text-white font-medium border-b border-white/10 pb-3">How I Help</a>
+            <a href="#work" onClick={() => setIsMenuOpen(false)} className="text-lg text-white font-medium border-b border-white/10 pb-3">Featured Projects</a>
+            <a href="#contact" onClick={() => setIsMenuOpen(false)} className="mt-auto px-6 py-3 bg-[#258c88] text-center text-white rounded-xl text-lg font-bold">Let's Connect</a>
+        </div>
+      )}
+
+      {/* About Section */}
+      <section id="about" className="pt-24 md:pt-32 pb-12 bg-[#0f172a] text-white">
         <div className="px-6 md:px-8 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-20 items-center min-h-[60vh]">
           <div className="space-y-6 md:space-y-10 order-2 md:order-1 pt-8 md:pt-0">
+            <div className="inline-block px-4 py-2 bg-white/10 rounded-full border border-white/20 text-teal-400 font-medium text-sm tracking-wide uppercase">Product Leader</div>
             <h1 className="text-3xl md:text-6xl lg:text-8xl font-serif font-bold leading-[0.9]">I turn product chaos into <span className="text-[#258c88]">measurable growth.</span></h1>
-            <p className="text-lg md:text-2xl text-slate-400 font-light">As a Data-driven Product Leader, I investigate metrics to uncover the "why" behind the numbers, building products that truly resonate with users.</p>
+            <p className="text-lg md:text-2xl text-slate-300 font-light">As a Data-driven Product Leader, I investigate metrics to uncover the "why" behind the numbers, building products that truly resonate with users.</p>
           </div>
           <div className="relative order-1 md:order-2 flex flex-col items-center mt-12 md:mt-0">
             <div className="relative group w-72 md:w-96">
@@ -156,9 +155,8 @@ export default function App() {
         </div>
       </section>
 
-
-      {/* How I Help*/}
-       <section id="toolkit" className="py-12 px-4 md:px-8 max-w-7xl mx-auto">
+      {/* Services Section */}
+      <section id="toolkit" className="py-12 px-4 md:px-8 max-w-7xl mx-auto">
         <header className="mb-8"><h3 className="text-2xl md:text-5xl font-serif font-bold text-slate-900">How I Help</h3></header>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((item, idx) => (
@@ -171,51 +169,60 @@ export default function App() {
         </div>
       </section>
 
-         {/* Tool Marquee */}
-      <div className="py-4 border-y border-slate-200 bg-slate-50 overflow-hidden">
-        <div className="flex animate-marquee gap-8 whitespace-nowrap">
-            {[...tools, ...tools].map((tool, i) => (
-                <span key={i} className="text-[#258c88] text-sm font-mono tracking-widest uppercase">{tool} •</span>
+      {/* Marquee Strip */}
+      <div className="overflow-hidden bg-[#258c88] py-4 whitespace-nowrap">
+        <div className="animate-marquee flex gap-16 text-white text-sm font-medium">
+            {["Kobo", "Typeform", "Figma", "Mural", "Lucidchart", "Jira", "ClickUp", "Trello", "Microsoft Clarity", "Google Analytics", "SQL", "Looker Studio", "Tableau", "Mixed Panel", "Confluence", "Notion", "AWS", "Git", "GitHub", "Doppler", "MongoDB"].map((t, i) => (
+                <span key={i} className="hover:text-slate-900 cursor-pointer">{t}</span>
+            ))}
+             {["Kobo", "Typeform", "Figma", "Mural", "Lucidchart", "Jira", "ClickUp", "Trello", "Microsoft Clarity", "Google Analytics", "SQL", "Looker Studio", "Tableau", "Mixed Panel", "Confluence", "Notion", "AWS", "Git", "GitHub", "Doppler", "MongoDB"].map((t, i) => (
+                <span key={i + 100} className="hover:text-slate-900 cursor-pointer">{t}</span>
             ))}
         </div>
       </div>
 
-
-      {/* Featured Projects Section: Mobile Carousel / Desktop Stacked List */}
-      <section id="work" className="py-12 md:py-15 bg-slate-100">
+      {/* Featured Projects Section */}
+      <section id="work" className="py-12 bg-slate-100">
         <div className="px-4 md:px-8 max-w-7xl mx-auto">
-          <h3 className="text-3xl md:text-5xl font-serif font-bold mb-8 md:mb-16">Featured Projects</h3>
+          <h3 className="text-3xl md:text-5xl font-serif font-bold mb-8">Featured Projects</h3>
           
-          {/* MOBILE: Carousel */}
-            <div className="md:hidden hide-scrollbar flex flex-row overflow-x-auto gap-6 pb-6 snap-x snap-mandatory touch-pan-x">
-            {workCaseStudies.map((work, idx) => (
-              <div key={idx} className="snap-center w-[85vw] flex-shrink-0 bg-white p-6 rounded-[2rem] border border-slate-200 shadow-lg">
-                <img src={work.image} alt={work.title} className="w-full aspect-video object-cover rounded-2xl shadow-lg mb-6" />
-                <h4 className="text-xl font-bold font-serif text-[#258c88] mb-2">{work.title}</h4>
-                <p className="text-sm text-slate-700 mb-4">{work.content}</p>
-                <div className="grid grid-cols-1 gap-2">
-                    {work.results.map((res, i) => (
-                        <div key={i} className="flex items-center gap-2 p-2 bg-teal-50/50 border border-teal-100 rounded-lg">
-                            <span className="text-[#258c88] font-bold text-xs">↗</span>
-                            <span className="text-slate-800 text-[10px] font-medium">{res}</span>
-                        </div>
-                    ))}
+          {/* Mobile Swipeable Carousel */}
+          <div className="md:hidden">
+            <p className="text-slate-500 italic mb-6">Swipe to see more →</p>
+            <div 
+                onTouchStart={handleTouchStart} 
+                onTouchEnd={handleTouchEnd}
+                className="hide-scrollbar flex flex-row overflow-x-auto gap-6 pb-6 snap-x snap-mandatory touch-pan-y"
+            >
+                {workCaseStudies.map((work, idx) => (
+                <div key={idx} className="snap-center w-[85vw] flex-shrink-0 bg-white p-6 rounded-[2rem] border border-slate-200 shadow-lg">
+                    <img src={work.image} alt={work.title} className="w-full h-40 object-cover rounded-2xl mb-6 shadow-inner" />
+                    <h4 className="text-xl font-bold font-serif text-[#258c88] mb-2">{work.title}</h4>
+                    <p className="text-sm text-slate-700 mb-4">{work.content}</p>
+                    <div className="grid grid-cols-1 gap-2">
+                        {work.results.map((res, i) => (
+                            <div key={i} className="flex items-center gap-2 p-2 bg-teal-50/50 border border-teal-100 rounded-lg">
+                                <span className="text-[#258c88] font-bold text-xs">↗</span>
+                                <span className="text-slate-800 text-[10px] font-medium">{res}</span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-              </div>
-            ))}
+                ))}
+            </div>
           </div>
 
-          {/* DESKTOP: Vertical Stacked List */}
-          <div className="hidden md:block space-y-16">
+          {/* Desktop Top-Down List */}
+          <div className="hidden md:flex flex-col gap-12">
             {workCaseStudies.map((work, idx) => (
-              <div key={idx} className="bg-white p-10 rounded-[2rem] border border-slate-200 shadow-md flex gap-10 items-center">
-                <div className="w-1/2">
-                    <img src={work.image} alt={work.title} className="w-full aspect-video object-cover rounded-2xl shadow-lg" />
+              <div key={idx} className="bg-white p-10 rounded-[2rem] border border-slate-200 shadow-sm flex gap-8">
+                <div className="w-1/3 h-48 bg-slate-100 rounded-2xl flex-shrink-0">
+                    <img src={work.image} alt={work.title} className="w-full h-full object-cover rounded-2xl" />
                 </div>
-                <div className="w-1/2 space-y-4">
-                    <h4 className="text-3xl font-bold font-serif text-[#258c88]">{work.title}</h4>
-                    <p className="text-lg text-slate-700 leading-relaxed">{work.content}</p>
-                    <div className="grid sm:grid-cols-2 gap-3 pt-4">
+                <div className="w-2/3">
+                    <h4 className="text-3xl font-bold font-serif text-[#258c88] mb-4">{work.title}</h4>
+                    <p className="text-lg text-slate-700 leading-relaxed mb-6">{work.content}</p>
+                    <div className="grid grid-cols-3 gap-3">
                         {work.results.map((res, i) => (
                             <div key={i} className="flex items-center gap-3 p-3 bg-teal-50/50 border border-teal-100 rounded-xl">
                                 <span className="text-[#258c88] font-bold">↗</span>
@@ -230,7 +237,8 @@ export default function App() {
         </div>
       </section>
 
-      <section id="contact" className="py-16 md:py-24 px-4 bg-[#0f172a] text-white rounded-t-[2.5rem] md:rounded-t-[4rem]">
+      {/* Contact Section */}
+     <section id="contact" className="py-16 md:py-24 px-4 bg-[#0f172a] text-white rounded-t-[2.5rem] md:rounded-t-[4rem]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <h3 className="text-2xl md:text-5xl font-serif font-bold mb-4 italic">Ready for your next challenge?</h3>
@@ -270,6 +278,7 @@ export default function App() {
           © 2026 Miss Mbuvi. Built for outcomes.
         </footer>
       </section>
+
     </div>
   );
 }
