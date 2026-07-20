@@ -96,14 +96,13 @@ export default function App() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-[#FDFDFC] text-[#0f172a] font-sans antialiased selection:bg-[#258c88] selection:text-white overflow-x-hidden">
+   return (
+    <div className="min-h-screen bg-[#FDFDFC] text-[#0f172a] font-sans antialiased overflow-x-hidden selection:bg-[#258c88] selection:text-white">
       <style>{`
         html { scroll-behavior: smooth; }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-marquee { animation: marquee 15s linear infinite; }
+        .animate-marquee { animation: marquee 20s linear infinite; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
       {/* Nav Section */}
@@ -148,7 +147,7 @@ export default function App() {
               </div>
             </div>
             <div className="flex gap-6 mt-8 z-10">
-              <a href="https://www.linkedin.com/in/mary-mbuvi-176882aa" target="_blank" rel="noreferrer" className="p-4 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:border-[#258c88] hover:text-[#258c88] transition-all"><LinkedinIcon /></a>
+              <a href="linkedin.com/in/mary-mbuvi-596255126" target="_blank" rel="noreferrer" className="p-4 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:border-[#258c88] hover:text-[#258c88] transition-all"><LinkedinIcon /></a>
               <a href="https://github.com/MaryMbuvi" target="_blank" rel="noreferrer" className="p-4 rounded-full bg-white/5 border border-white/10 text-slate-400 hover:border-[#258c88] hover:text-[#258c88] transition-all"><GithubIcon /></a>
             </div>
           </div>
@@ -189,28 +188,19 @@ export default function App() {
           {/* Mobile Swipeable Carousel */}
           <div className="md:hidden">
             <p className="text-slate-500 italic mb-6">Swipe to see more →</p>
-            <div 
-                onTouchStart={handleTouchStart} 
-                onTouchEnd={handleTouchEnd}
-                className="hide-scrollbar flex flex-row overflow-x-auto gap-6 pb-6 snap-x snap-mandatory touch-pan-y"
-            >
-                {workCaseStudies.map((work, idx) => (
-                <div key={idx} className="snap-center w-[85vw] flex-shrink-0 bg-white p-6 rounded-[2rem] border border-slate-200 shadow-lg">
-                    <img src={work.image} alt={work.title} className="w-full h-40 object-cover rounded-2xl mb-6 shadow-inner" />
-                    <h4 className="text-xl font-bold font-serif text-[#258c88] mb-2">{work.title}</h4>
-                    <p className="text-sm text-slate-700 mb-4">{work.content}</p>
-                    <div className="grid grid-cols-1 gap-2">
-                        {work.results.map((res, i) => (
-                            <div key={i} className="flex items-center gap-2 p-2 bg-teal-50/50 border border-teal-100 rounded-lg">
-                                <span className="text-[#258c88] font-bold text-xs">↗</span>
-                                <span className="text-slate-800 text-[10px] font-medium">{res}</span>
-                            </div>
-                        ))}
+          </div>
+          <div className="md:hidden flex overflow-x-auto gap-4 pb-8 snap-x snap-mandatory hide-scrollbar" style={{ touchAction: 'pan-x' }}>
+            {workCaseStudies.map((work, idx) => (
+                <div key={idx} className="snap-center w-[80vw] flex-shrink-0 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                    <img src={work.image} className="w-full h-40 object-cover rounded-2xl mb-4" />
+                    <h4 className="font-bold text-lg mb-2">{work.title}</h4>
+                    <p className="text-sm text-slate-600 mb-4">{work.content}</p>
+                    <div className="space-y-2">
+                        {work.results.map((res, i) => <div key={i} className="text-xs bg-teal-50 p-2 rounded-lg text-[#258c88]">↗ {res}</div>)}
                     </div>
                 </div>
-                ))}
-            </div>
-          </div>
+            ))}
+        </div>
 
           {/* Desktop Top-Down List */}
           <div className="hidden md:flex flex-col gap-12">
